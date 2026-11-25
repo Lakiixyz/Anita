@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="hu">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>ASCII Bouquet 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap">
+<style>
+/* one screen: greeting, spinning text bouquet, hint */
+:root{--bg:#0d1117;--fg:#ffe27a;--soft:#a9b4c0;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:ui-monospace,Menlo,Consolas,monospace;text-align:center}
+main{display:flex;flex-direction:column;align-items:center;gap:12px;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:1.5rem;margin:0}
+p{margin:0;color:var(--soft);font-size:.85rem}
+canvas{width:min(100%,520px,68vh);aspect-ratio:5/6;touch-action:manipulation;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#box{position:fixed;inset:0;z-index:5;background:rgba(5,8,12,.85);display:flex;align-items:center;justify-content:center;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#env{position:relative;width:min(100%,320px);aspect-ratio:8/5;border:0;padding:0;background:#b9546c;border-radius:6px;cursor:pointer;perspective:800px;animation:in .5s ease-out}
+#env span{position:absolute;display:block}
+.sheet{left:6%;right:6%;top:8%;bottom:8%;background:#fff8ea;border-radius:4px;z-index:1;transition:translate .6s .5s}
+.front{inset:0;background:#e2788f;clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);z-index:2;border-radius:6px}
+.flap{left:0;right:0;top:0;height:60%;background:#f092a6;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;z-index:3;transition:transform .5s,z-index 0s .25s}
+.seal{left:50%;top:58%;translate:-50% -50%;font-size:2.2rem;z-index:4;transition:opacity .3s}
+.tip{left:0;right:0;top:calc(100% + 16px);color:#fff;font:1rem ui-monospace,monospace}
+.open .flap{transform:rotateX(180deg);z-index:0}
+.open .sheet{translate:0 -55%}
+.open .seal,.open .tip{opacity:0}
+#paper{width:min(100%,420px);max-height:100%;overflow:auto;box-sizing:border-box;background:#fff8ea;color:#3a2430;border-radius:8px;padding:28px 24px;display:flex;flex-direction:column;gap:24px;align-items:center;animation:in .5s ease-out}
+#text{text-align:left;white-space:pre-wrap;overflow-wrap:anywhere;font:1rem/1.65 "Comic Sans MS","Comic Sans","Comic Neue",cursive;align-self:stretch}
+#close{font:inherit;background:#b9546c;color:#fff;border:0;border-radius:99px;padding:10px 24px;cursor:pointer}
+@keyframes in{from{opacity:0;scale:.7}to{opacity:1;scale:1}}
+</style>
+<main>
+  <canvas id="c" width="1000" height="1200" role="button" tabindex="0" aria-label="Rotating 3D bouquet of white daisies and red roses made of text characters"></canvas>
+  <div style="font-size:2rem;font-weight:bold">Anita❤️</div>
+</main>
+<div id="box" role="dialog" aria-modal="true" aria-label="Levél" hidden>
+  <button id="env" type="button" aria-label="Levél kinyitása">
+    <span class="sheet"></span><span class="front"></span><span class="flap"></span><span class="seal">&#10084;&#65039;</span>
+    <span class="tip">Nyisd ki</span>
+  </button>
+  <div id="paper" hidden>
+    <div id="text">Én amikor megismertelek életemben elsőnek éreztem olyan dolgokat amiket éreztem,hogy nekem el kell mennem hozzád,hogy én tényleg egy családot terveztem veled,egy közös jövőt,megtenni és megcsinálni azokat a dolgokat amiket/amikről beszéltünk és én ezt szeretném megkérdezni hogy ha ezt te is komolyan gondoltad régebben,akkor hogy látsz-e erre esélyt.
+
+Az előző 3hét olyan gyorsan elment hogy fel se tűnt,élveztük újra egymás  társaságát és minden nagyon jó volt,lehet te cska a fejemhez vágod hogy unatkozol és azért beszélsz velem de én nem így gondolom közben lehet hogy mégis igazad van.
+
+Rengeteg motivációt adtál mindig is és tényleg nem éreztem ilyen dolgokat soha mint amit veled
+
+Tényleg komolyan gondoltam amit mondtam hogy kérek 1-1.2milliót discordon kölcsön,felköltözünk pécsre(vagy ahol neked jó. feladatod lenne keresni egy 1.5 szobás albérletet ami félig meddig bútorozott) és arra lenne a pénz hogy kaukció+ameddig nemtalálok munkát abból élnénk és ott laknánk együtt,lili maci fanni és laurával
+
+Elrontottunk mindketten bőven dolgokat,hibáztunk de valami oknál fogva mindig ugyanúgy kikötünk egymás mellett és kötődünk egymáshoz
+
+Ezer és egy dolog van amit szerettem volna írni de mire odajutottam hogy elkezdjem egyszerűen nem megy nemjut eszembe semmi
+
+Szeretnélek megkérni hogy ezt olvasd el többször,gondolkozz el rajta és pénteken adj egy választ
+
+Addig szeretnélek megkérni hogy ne keress,egy rendes kifejtett választ szeretnék kérni nem egy "aa heo" légyszives,megérdemlem.
+
+Tényleg komolyan gondolom és tisztában vagyok azzal hogy ezzel azt kérem tőled hogy rúgj fel mindent körülötted de úgy gondolom inkább legyek elutasítva minthogy azon kattogjak mi lett volna ha.
+
+Azt mondtad hogy ha valakivel szétválnak az útjaid azt nem is látod többet,mi mindig visszatalálunk egymáshoz.
+
+Szeretném tisztalappal kezdeni és megismerni a családod,barátaid.
+
+Szeretnéd velem,együtt újra megpróbálni és egy közös jövőt építeni célokkal?</div>
+    <button id="close" type="button">Bezárás</button>
+  </div>
+</div>
+<script>
+const cv=document.getElementById('c'),g=cv.getContext('2d');
+const W=110,H=88,cw=cv.width/W,ch=cv.height/H,RAMP='.,-~:;=!*#$@';
+const pts=[];
+const add=(a,b,s)=>a.map((v,i)=>v+b[i]*s);
+const norm=a=>{const l=Math.hypot(...a)||1;return a.map(v=>v/l)};
+const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+const TAU=Math.PI*2;
+// y points up
+function head(kind,c,dir){
+  const n=norm(dir),u=norm(cross(n,[.13,.2,.97])),v=cross(n,u);
+  const put=(r,a,h,col,nr,nh)=>{
+    const rad=add(u.map(x=>x*Math.cos(a)),v,Math.sin(a));
+    pts.push([...add(add(c,rad,r),n,h),...norm(add(n.map(x=>x*nh),rad,nr)),col]);
+  };
+  if(kind==='rose'){
+    [[.46,.20,5,0],[.36,.27,5,.6],[.26,.31,4,1.2],[.16,.33,3,.3]].forEach(([R,Hh,k,off],layer)=>{
+      for(let a=0;a<TAU;a+=.05){
+        const edge=Math.abs(Math.sin((a*k)/2+off));
+        for(let t=0;t<=1;t+=.07){
+          const col=t>.88||edge<.15?'#ff6b86':layer%2?'#e0264c':'#b8123a';
+          put(R*Math.sin(t*1.45)*(.85+.15*edge),a,Hh*t*t*(.7+.3*edge),col,-t,1.1-t);
+        }
+      }
+    });
+    for(let s=0;s<1;s+=.005)put(.12*s,s*TAU*3,.3,'#ff8fa3',.3,1);
+  }else{
+    const big=kind==='sun',R=big?.56:.44,core=big?.16:.13,k=16;
+    for(let a=0;a<TAU;a+=.03){
+      const e=Math.pow(Math.abs(Math.cos(a*k/2)),.5);
+      for(let r=core;r<core+(R-core)*e;r+=.025)put(r,a,.12*(r/R)**2,r>R*.68?'#ffffff':'#dfe6f2',-.25,1);
+    }
+    for(let r=0;r<core;r+=.022)for(let a=0;a<TAU;a+=.022/(r+.03))
+      put(r,a,.1*(1-(r/core)**2)+.02,'#ffc81f',r/core,1);
+  }
+}
+function tube(a,b,rad,col){
+  const d=norm(b.map((x,i)=>x-a[i])),u=norm(cross(d,[.3,.1,.9])),v=cross(d,u);
+  for(let t=0;t<=1;t+=.012)for(let q=0;q<TAU;q+=.7){
+    const n=add(u.map(x=>x*Math.cos(q)),v,Math.sin(q));
+    pts.push([...a.map((x,i)=>x+(b[i]-x)*t+n[i]*rad),...n,col]);
+  }
+}
+const neck=[0,-1.5,0];
+// [kind, azimuth in turns, tilt from vertical]
+[['sun',0,0],['rose',.04,.55],['sun',.2,.8],['rose',.37,.55],['daisy',.3,1.15],
+ ['sun',.53,.8],['rose',.7,.55],['daisy',.63,1.15],['sun',.86,.8],['daisy',.96,1.15],
+ ['rose',.12,1.05],['rose',.45,1.1],['rose',.78,1.08]].forEach(([k,az,t])=>{
+  const d=[Math.sin(t)*Math.sin(az*TAU),Math.cos(t),Math.sin(t)*Math.cos(az*TAU)];
+  const c=add([0,.1,0],d,1.45);
+  head(k,c,add(d,[0,1,0],.15));
+  tube(neck,c,.025,'#3f9a4a');
+  tube(neck,[-d[0]*.35,-2.55,-d[2]*.35],.025,'#3f9a4a');
+});
+// leaves
+for(let i=0;i<9;i++){
+  const a=i/9*TAU+.2,dx=Math.sin(a),dz=Math.cos(a);
+  for(let t=0;t<=1;t+=.025){const w=.24*Math.sin(Math.PI*t);
+    for(let s=-w;s<=w;s+=.03){const r=.65+t*.95;
+      pts.push([dx*r+dz*s,-.2+t*.35-Math.abs(s)*.4,dz*r-dx*s,...norm([-dx*.3,1,-dz*.3]),Math.abs(s)<.03?'#8fe08a':'#35874a']);}}
+}
+// paper wrap and ribbon
+for(let t=0;t<=1;t+=.011)for(let a=0;a<TAU;a+=.025){
+  const top=.25*Math.abs(Math.sin(a*2.5)),r=.18+t*.95,y=-1.6+t*(1.15+top),n=norm([Math.sin(a),-.7,Math.cos(a)]);
+  pts.push([r*Math.sin(a),y,r*Math.cos(a),...n,'#e8cfa0']);
+}
+for(let a=0;a<TAU;a+=.03)for(let q=0;q<TAU;q+=.4){
+  const n=[Math.sin(a)*Math.cos(q),Math.sin(q),Math.cos(a)*Math.cos(q)];
+  pts.push([Math.sin(a)*.24+n[0]*.06,-1.55+n[1]*.06,Math.cos(a)*.24+n[2]*.06,...n,'#ffd23f']);
+}
+let ang=0;
+const L=norm([-.4,.6,.75]),tilt=.38,ct=Math.cos(tilt),st=Math.sin(tilt);
+function render(){
+  const z=new Float32Array(W*H).fill(0),out=new Array(W*H),ca=Math.cos(ang),sa=Math.sin(ang);
+  const rot=(x,y,w)=>{const X=x*ca+w*sa,Z=w*ca-x*sa;return[X,y*ct-Z*st,y*st+Z*ct]};
+  for(const p of pts){
+    const[x,y,d]=rot(p[0],p[1],p[2]),D=1/(9-d);
+    const sx=Math.round(W/2+x*D*225),sy=Math.round(H*.45-y*D*225*cw/ch);
+    if(sx<0||sy<0||sx>=W||sy>=H)continue;
+    const i=sy*W+sx;if(D<=z[i])continue;z[i]=D;
+    const n=rot(p[3],p[4],p[5]);
+    const l=Math.abs(n[0]*L[0]+n[1]*L[1]+n[2]*L[2]);
+    out[i]=[RAMP[Math.min(11,3+Math.floor(l*9))],p[6],Math.min(1,Math.max(.3,.2+.55*l+(d+1)*.2))];
+  }
+  g.globalAlpha=1;g.fillStyle='#0d1117';g.fillRect(0,0,cv.width,cv.height);
+  g.font=`bold ${ch*1.05}px ui-monospace,Menlo,Consolas,monospace`;g.textAlign='center';g.textBaseline='middle';
+  out.forEach((o,i)=>{if(o){g.globalAlpha=o[2];g.fillStyle=o[1];g.fillText(o[0],(i%W+.5)*cw,((i/W|0)+.5)*ch)}});
+}
+let prev=0;
+function loop(t){if(t-prev>50){ang+=Math.min(t-prev,100)*.0009;render();prev=t}requestAnimationFrame(loop)}
+render();requestAnimationFrame(loop);
+const $=id=>document.getElementById(id);
+let timer;
+function openBox(){$('box').hidden=false;$('env').hidden=false;$('env').classList.remove('open');$('paper').hidden=true;$('env').focus()}
+function closeBox(){clearTimeout(timer);$('box').hidden=true;cv.focus()}
+cv.addEventListener('click',openBox);
+cv.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBox()}});
+$('env').addEventListener('click',()=>{
+  if($('env').classList.contains('open'))return;
+  $('env').classList.add('open');
+  timer=setTimeout(()=>{$('env').hidden=true;$('paper').hidden=false;$('paper').scrollTop=0;$('close').focus({preventScroll:true})},1100);
+});
+$('close').addEventListener('click',closeBox);
+$('box').addEventListener('click',e=>{if(e.target===$('box'))closeBox()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('box').hidden)closeBox()});
+</script>
